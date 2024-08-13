@@ -13,25 +13,15 @@ public static class Program
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder();
 
-        builder.Services.AddPresentationServices()
+        builder.Services.AddInfrastructureServices(builder.Configuration)
                         .AddApplicationServices()
-                        .AddInfrastructureServices(builder.Configuration);
-
-        string AllowAllOrigins = "AllowAllOrigins";
-
-        builder.Services.AddCors(options =>
-        {
-            options.AddPolicy(name: AllowAllOrigins, policyBuilder =>
-            {
-                policyBuilder.AllowAnyOrigin();
-                policyBuilder.AllowAnyHeader();
-                policyBuilder.AllowAnyMethod();
-            });
-        });
+                        .AddPresentationServices();
 
         WebApplication app = builder.Build();
 
-        app.UseCors(AllowAllOrigins);
+        app.UseCors("AllowAllOrigins");
+
+        app.MapControllers();
 
         await app.RunAsync();
     }

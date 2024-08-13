@@ -8,6 +8,16 @@ public static class DependencyInjection
     {
         services.AddControllers();
 
+        services.AddCors(options =>
+        {
+            options.AddPolicy(name: "AllowAllOrigins", policyBuilder =>
+            {
+                policyBuilder.AllowAnyOrigin();
+                policyBuilder.AllowAnyHeader();
+                policyBuilder.AllowAnyMethod();
+            });
+        });
+
         return services;
     }
 }
